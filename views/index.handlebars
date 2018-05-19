@@ -1,13 +1,65 @@
 {{!-- * Setup the `index.handlebars` to have the template that Handlebars can render onto. --}}
 {{!-- * Create a button in `index.handlebars` that will submit the user input into the database. --}}
-<h1>Eat Da Burger!</h1> 
+<img src = "/assets/img/tasty_burger.gif" width="150px" height="150px"></a>
+<h1 id= "slogan">Eat Da Burger!</h1> 
 <h2>Noms on buns for you!</h2>
 
+{{!-- <form>
+<input type = 'text' id = 'textInput' placeholder="What'll ya have? What'll ya have?" style = 'width: 500px'>
+  <br>
+<button id='submit' type='submit'>Get it hot!</button>
+</form> --}}
+
+<h2>Add a Burger</h2>
+
+<form class="burgerForm">
+
+  <div class="form-group">
+    <label for="burger_name"></label>
+    <input type="text" id="burger_name" name="burger_name" placeholder="What'll ya have? What'll ya have?" style= "width: 500px">
+  </div>
+
+  <div class="form-group">
+    <label for="devoured"><p>Have you Nomed this Burger?</p></label><br>
+    <input type="radio" name="devoured" value="1"><p>Nomed!</p>
+    <input type="radio" name="devoured" value="0" checked><p>Not Nomed!</p>
+  </div>
+
+  <button type="submit" id="submit">Add Burger</button>
+</form>
+
+<h2>un-nomed burgers!</h2>
+
 <ul>
-  {{#each Burger}}
+  {{#each burgers}}
+    {{#unless devoured}}
+      <li>
+        {{burger_name}}
+
+        <button class="devourUndevour" data-id="{{id}}" data-devoured="{{devoured}}">
+          {{#if devoured}}Un-devour!{{else}}Devour!{{/if}}
+        </button>
+        <button class="deleteBurger" data-id="{{this.id}}">X</button>
+
+      </li>
+    {{/unless}}
   {{/each}}
 </ul>
 
-<h2>Place an Order Here</h2>
+<h2>nomed burgers!</h2>
 
-<button type='submit'>Get it hot!</button>
+<ul>
+  {{#each burgers}}
+    {{#if devoured}}
+      <li>
+        {{burger_name}}
+
+        <button class="devourUndevour" data-id="{{id}}" data-devoured="{{devoured}}">
+          {{#if devoured}}Un-devour!{{else}}Devour!{{/if}}
+          <button class="deleteBurger" data-id="{{this.id}}">X</button>
+        </button>
+
+      </li>
+    {{/if}}
+  {{/each}}
+</ul>
