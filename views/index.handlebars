@@ -1,14 +1,6 @@
-{{!-- * Setup the `index.handlebars` to have the template that Handlebars can render onto. --}}
-{{!-- * Create a button in `index.handlebars` that will submit the user input into the database. --}}
 <img src = "/assets/img/tasty_burger.gif" width="150px" height="150px"></a>
 <h1 id= "slogan">Eat Da Burger!</h1> 
 <h2>Noms on buns for you!</h2>
-
-{{!-- <form>
-<input type = 'text' id = 'textInput' placeholder="What'll ya have? What'll ya have?" style = 'width: 500px'>
-  <br>
-<button id='submit' type='submit'>Get it hot!</button>
-</form> --}}
 
 <h2>Add a Burger</h2>
 
@@ -20,46 +12,53 @@
   </div>
 
   <div class="form-group">
-    <label for="devoured"><p>Have you Nomed this Burger?</p></label><br>
-    <input type="radio" name="devoured" value="1"><p>Nomed!</p>
-    <input type="radio" name="devoured" value="0" checked><p>Not Nomed!</p>
+    <label for="devoured"><p>Have you Nomed this Burger?</p></label>
+    <input type="radio" name="devoured" id="radiobtn" value="1">Nomed!&nbsp;
+    <input type="radio" name="devoured" id="radiobtn" value="0" checked>Not Nomed!
   </div>
 
   <button type="submit" id="submit">Add Burger</button>
 </form>
 
-<h2>un-nomed burgers!</h2>
+<div class="burger-container">
+  <div id="container1">
+    <h2>un-nomed burgers!</h2>
 
-<ul>
-  {{#each burgers}}
-    {{#unless devoured}}
-      <li>
-        {{burger_name}}
+    <ul>
+      {{#each burgers}}
+        {{#unless devoured}}
+          <li>
+            {{burger_name}}
 
-        <button class="devourUndevour" data-id="{{id}}" data-devoured="{{devoured}}">
-          {{#if devoured}}Un-devour!{{else}}Devour!{{/if}}
-        </button>
-        <button class="deleteBurger" data-id="{{this.id}}">X</button>
+            <button class="devourUndevour" data-id="{{id}}" data-devoured="{{devoured}}">
+              {{#if devoured}}Un-devour!{{else}}Devour!{{/if}}</button>
 
-      </li>
-    {{/unless}}
-  {{/each}}
-</ul>
+            <button class="deleteBurger" data-id="{{this.id}}">X</button>
 
-<h2>nomed burgers!</h2>
+          </li>
+        {{/unless}}
+      {{/each}}
+    </ul>
+  </div>
 
-<ul>
-  {{#each burgers}}
-    {{#if devoured}}
-      <li>
-        {{burger_name}}
+  <div id="container2">
+    <h2>nomed burgers!</h2>
 
-        <button class="devourUndevour" data-id="{{id}}" data-devoured="{{devoured}}">
-          {{#if devoured}}Un-devour!{{else}}Devour!{{/if}}
-          <button class="deleteBurger" data-id="{{this.id}}">X</button>
-        </button>
+    <ul>
+      {{#each burgers}}
+        {{#if devoured}}
+          <li>
+            {{burger_name}}
 
-      </li>
-    {{/if}}
-  {{/each}}
-</ul>
+            <button class="devourUndevour" data-id="{{id}}" data-devoured="{{devoured}}">
+              {{#if devoured}}Un-devour!{{else}}Devour!{{/if}}</button>
+
+            <button class="deleteBurger" data-id="{{this.id}}">X</button>
+            
+
+          </li>
+        {{/if}}
+      {{/each}}
+    </ul>
+  </div>
+</div>
