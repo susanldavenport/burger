@@ -13,6 +13,7 @@ connection.connect(function(err){
     return;
   }
   console.log("Connected as " + connection.threadId);
+  console.log("========================");
 });
 
 module.exports = connection; 

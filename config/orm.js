@@ -1,7 +1,7 @@
 const connection = require("../config/connection.js");
 
 function printQuestionMarks(num) {
-  const arr = [];
+  let arr = [];
   for (var i = 0; i < num; i++) {
     arr.push("?");
   }
@@ -9,9 +9,9 @@ function printQuestionMarks(num) {
 }
 
 function objToSql(ob) {
-  const arr = [];
+  let arr = [];
   for (var key in ob) {
-    const value = ob[key];
+    let value = ob[key];
     if (Object.hasOwnProperty.call(ob, key)) {
       if (typeof value === "string" && value.indexOf(" ") >= 0) {
         value = "'" + value + "'";
@@ -19,59 +19,80 @@ function objToSql(ob) {
       arr.push(key + "=" + value);
     }
   }
-
   return arr.toString();
 }
 
-const orm = {
+let orm = {
   //list all burgers
-  selectAll: function(tableInput, cb) {
-    const queryString = "SELECT * FROM " + tableInput + ";";
+  selectAll: function(table, cb) {
+    let queryString = "SELECT * FROM " + table + ";";
     connection.query(queryString, function(err, result) {
       if (err) {
         throw err;
       }
       cb(result);
+      // console.log("====================");
+      // console.log("in orm.js, selectAll: ", result);
     });
   },
 
   //insert new burger
   insertOne: function(table, cols, vals, cb) {
-    const queryString = "INSERT INTO" + table; 
+    let queryString = "INSERT INTO " + table; 
 
     queryString += " (";
-    queryString += cols.toString();
+    queryString += "burger_name, devoured"; 
     queryString += ") ";
     queryString += "VALUES (";
-    queryString += printQuestionMarks(vals.length);
+    queryString += vals.toString();
     queryString += ") ";
 
-    console.log(queryString);
+    console.log("orm.js insertOne query string: ", queryString);
+  
 
     connection.query(queryString, vals, function(err, result) {
       if (err) {
         throw err;
       }
       cb(result);
+      console.log("insertOne: ", result);
     });
   },
 
   //update existing burger
   updateOne: function(table, objColVals, condition, cb) {
-    const queryString = "UPDATE " + table;
-
+    let queryString = "UPDATE " + table;
     queryString += " SET ";
-    queryString += objToSql(objColVals);
+    queryString += objColVals;
     queryString += " WHERE ";
     queryString += condition;
 
-    console.log(queryString);
+    console.log("orm.js updateOne query string: ", queryString);
+    console.log("objColVals", objColVals);
+
+    connection.query(queryString, function(err, result) {
+      if (err) {
+        throw err;
+      }
+      cb(result);
+    });
+  },
+
+  //delete existing burger
+  delete: function(table, condition, cb) {
+    let queryString = "DELETE FROM " + table;
+    queryString += " WHERE ";
+    queryString += condition;
+    // console.log("orm.delete function 'condition': ", condition);
+
     connection.query(queryString, function(err, result) {
       if (err) {
         throw err;
       }
 
       cb(result);
+      // console.log("orm.js delete query string: ", queryString);
+
     });
   }
 };

@@ -8,8 +8,8 @@ router.get("/", function(req, res) {
     let bgrObject = {
       burgers: data
     };
-    console.log(bgrObject);
     res.render("index", bgrObject); 
+    console.log(bgrObject);
   });
 });
 
@@ -17,19 +17,21 @@ router.post("/api/burgers", function(req, res){
   burger.insertOne([
     "burger_name", "devoured"
   ],[
-    req.body.burger_name, req.body.devoured
+    `'${req.body.burger_name}'`, req.body.devoured
   ], function(result) {
-    res.json({id:result.insertID});
+    console.log("router.post", result);
+    res.json({id: result.insertID});
   });
 });
 
 router.put("/api/burgers/:id", function(req, res){
-  const condition = "id = " + req.params.id;
-  console.log ("condition", condition); 
+  let condition = "id = " + req.params.id;
+  let objColVals = "devoured = " + req.body.devoured;
+  // console.log ("condition", condition); 
+  // console.log ("objColVals", objColVals);
 
-  burger.updateOne({
-    devoured: req.body.devoured
-  }, condition, function(result){
+  burger.updateOne(
+    objColVals, condition, function(result){
     if (result.changedRows === 0) {
       return res.status(404).end();
     } else {
@@ -37,5 +39,20 @@ router.put("/api/burgers/:id", function(req, res){
     }
   });
 });
+
+router.delete("/api/burgers/:id", function(req, res) {
+  // let condition = `id = ${req.params.id}`;
+  let condition = "id = " + req.params.id;
+  // console.log("router condition", condition); 
+
+  burger.delete(condition, function(result) {
+    if (result.affectedRows == 0) {
+      return res.status(404).end();
+    } else {
+      res.status(200).end();
+    }
+  });
+});
+
 
 module.exports = router; 
